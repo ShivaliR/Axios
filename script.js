@@ -5,6 +5,7 @@ window.addEventListener("load", () => {
   document.getElementById("put").addEventListener("click", putTodos);
   document.getElementById("delete").addEventListener("click", deleteTodos);
   document.getElementById("simRequests").addEventListener("click", simRequestsTodos);
+  document.getElementById("errHandling").addEventListener("click", errHandling);
 
   function getTodos() {
     //THIS IS THE LONG WAY OF USING AXIOS
@@ -87,6 +88,27 @@ window.addEventListener("load", () => {
       )
       //axios.spread() allows us to give more descriptive variable names
       .catch(err=>console.error(err));
+  }
+  function errHandling(){
+    //STATUS 200 - OK
+    axios
+      .get("https://jsonplaceholder.typicode.com/postss")
+      .then((response) => showData(response))
+      .catch((err)=>{
+        console.log(err.response.status);
+        console.log(err.response.data);
+        console.log(err.response.headers);
+        if(err.response.status === 404){
+          alert('Page not found!')
+        }
+        else if(err.request){
+        // REQUEST WAS MADE BUT NO RESPONSE 
+         console.log(err.request)
+        }
+        else{
+          console.log(err.message)
+        }
+      });
   }
   function showData(res) {
     document.getElementById("resultContainer").innerHTML = `
